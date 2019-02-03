@@ -2,8 +2,8 @@
 import React, { Component } from 'react'
 
 export default class App extends Component {
-  constructor(){
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       movies: [
         {title: 'Mean Girls'},
@@ -12,44 +12,39 @@ export default class App extends Component {
         {title: 'Sunshine'},
         {title: 'Ex Machina'},
       ],
-      value: '',
-      search: false,
-
+      search: '',
     }
+    this.searchVidRef = React.createRef();
     this.handleSearch = this.handleSearch.bind(this);
-    this.handleChange = this.handleChange.bind(this);
   }
 
   handleSearch(e) {
-    let app = this;
-    this.setState({search: true})
     e.preventDefault();
-  }
-
-  handleChange(e) {
-    this.setState({value: e.target.value})
+    let app = this;
+    let {name, value} = app.searchVidRef.current;
+    this.setState({
+      [name]: value,
+    });
   }
 
   render() {
-    const { movies, value, search } = this.state;
+    // consider making another component for just the movie list and passing down
+    // movies as props to that component
+    const { movies, search } = this.state;
     return (
       <div>
         <h1>Movie List</h1>
-        <form onSubmit={this.handleSearch}>
-          <label>
-            Search Movie Title:
-            <input type="text" value={value} onChange={this.handleChange} />
-          </label>
-          <input type="submit" value="submit"/>
-        </form>
+          <form onSubmit={this.handleSearch}>
+            <label>
+              Search Movie Title:
+              <input type="text" name="search" ref={this.searchVidRef}/>
+            </label>
+            <input type="submit" value="submit"/>
+          </form>
         <ul>
-          {search === true && movies.map((movie, i) => {
-            if (value === '') {
-              return <li key={i}> {movie.title}</li>
-            } else if (movie.title.includes(value)) {
-              return <li key={i}> {movie.title}</li>
-            }
-          })}
+        {movies.map((movie, i) => {
+          return <li key={i}> {movie.title} </li>
+        })}
         </ul>
       </div>
     )
