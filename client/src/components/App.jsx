@@ -6,18 +6,12 @@ export default class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      movies: [
-        {title: 'Mean Girls'},
-        {title: 'Hackers'},
-        {title: 'The Grey'},
-        {title: 'Sunshine'},
-        {title: 'Ex Machina'},
-      ],
+      movies: [],
       search: '',
       addMovie: '',
       searchMovies: []
     }
-
+    this.userMovies = []
     this.searchVidRef = React.createRef();
     this.addVidRef = React.createRef();
     this.handleSearch = this.handleSearch.bind(this);
@@ -48,8 +42,10 @@ export default class App extends Component {
     e.preventDefault();
     let app = this;
     let {name, value} = app.addVidRef.current;
+    app.userMovies.push({title: value });
     this.setState({
-      [name]: value
+      [name]: value,
+      movies: app.userMovies
     });
   }
 
@@ -69,6 +65,7 @@ export default class App extends Component {
               <input type="text" name="addMovie" ref={this.addVidRef}/>
               <button onClick={this.handleAddMovie}>Add Movie!</button>
             </label>
+            <br/>
             <br/>
             <label>
               Search Movie Title:
