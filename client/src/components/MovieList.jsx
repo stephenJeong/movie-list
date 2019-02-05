@@ -14,11 +14,11 @@ export default class MovieList extends Component {
     let { movies } =  this.props;
 
     return (
-      <ul>
+      <div>
         {movies.map((el, i) => {
           return <Movie handleToggle = {this.props.handleToggle} key={i} movie={el.title}/>
         })}
-      </ul>
+      </div>
 
     )
   }

@@ -1,11 +1,14 @@
-import React, { Component } from 'react'
-import Collapsible from 'react-collapsible';
+import React, { Component } from 'react';
+import Details from './Details.jsx';
 
 export default class Movie extends Component {
   constructor(props) {
     super(props)
-
-    this.getMovieName = this.getMovieName.bind(this)
+    this.state = {
+      clicked: false
+    }
+    this.getMovieName = this.getMovieName.bind(this);
+    this.handleTitleClick = this.handleTitleClick.bind(this);
   }
 
   getMovieName(e) {
@@ -14,28 +17,21 @@ export default class Movie extends Component {
     return app.props.handleToggle(movie);
   }
 
+  handleTitleClick() {
+
+    this.setState({clicked: !this.state.clicked })
+  }
 
   render() {
     let { movie } =  this.props;
     return (
       <div>
           <br></br>
-          <div name={movie}>
+          <div name={movie} onClick={this.handleTitleClick}>
             {movie}
             <button name={movie} onClick={this.getMovieName}>watched</button>
           </div>
-          <li>
-          <Collapsible className='container' trigger={movie}>
-            <p className='card'>
-              Collapsible content
-              <br/>
-              <input type="radio" name="watched" value="watched"/>watched
-              <br/>
-              <button name={movie} onClick={this.getMovieName}>watched</button>
-            </p>
-          </Collapsible>
-          </li>
-          {/* {this.state.clicked && <newComponent />} */}
+          {this.state.clicked && <Details/>}
       </div>
 
 
