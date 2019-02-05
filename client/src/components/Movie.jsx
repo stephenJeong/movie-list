@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
+import Collapsible from 'react-collapsible';
 
 export default class Movie extends Component {
   constructor(props) {
     super(props)
+
     this.getMovieName = this.getMovieName.bind(this)
   }
 
@@ -16,10 +18,30 @@ export default class Movie extends Component {
   render() {
     let { movie } =  this.props;
     return (
-      <li name={movie}>
-        {movie}
-        <button name={movie} onClick={this.getMovieName}>watched</button>
-      </li>
+      <div>
+          <br></br>
+          <div name={movie}>
+            {movie}
+            <button name={movie} onClick={this.getMovieName}>watched</button>
+          </div>
+          <li>
+          <Collapsible className='container' trigger={movie}>
+            <p className='card'>
+              Collapsible content
+              <br/>
+              <input type="radio" name="watched" value="watched"/>watched
+              <br/>
+              <button name={movie} onClick={this.getMovieName}>watched</button>
+            </p>
+          </Collapsible>
+          </li>
+          {/* {this.state.clicked && <newComponent />} */}
+      </div>
+
+
+      // <li name={movie}>
+
+      // </li>
     )
   }
 }

@@ -30,6 +30,11 @@ export default class App extends Component {
     let {movies}=this.state;
 
     let {name, value} = app.searchVidRef.current;
+    // handles empty search
+    if (value === '') {
+      return;
+    }
+
     let movieMatches = movies.filter((movie) => {
       if (movie.title.includes(value)) {
         return movie
@@ -49,8 +54,10 @@ export default class App extends Component {
     let app = this;
     console.log('add vid Ref', this.addVidRef);
     let { name, value } = this.addVidRef.current;
+    if (value === '') {
+      return;
+    }
     app.userMovies.push({title: value, watched: false });
-    // [brave, coco]
     this.setState({
       [name]: '',
       movies: app.userMovies

@@ -19,6 +19,7 @@ export default class MovieList extends Component {
           return <Movie handleToggle = {this.props.handleToggle} key={i} movie={el.title}/>
         })}
       </ul>
+
     )
   }
 }
