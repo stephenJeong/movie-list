@@ -9,13 +9,19 @@ export default class App extends Component {
       movies: [],
       search: '',
       addMovie: '',
-      searchMovies: []
+      searchMovies: [],
+      watchedMovies: [],
+      toggleWatched: false,
+      showWatched: false
     }
-    this.userMovies = []
+
+    this.userMovies = [];
     this.searchVidRef = React.createRef();
     this.addVidRef = React.createRef();
     this.handleSearch = this.handleSearch.bind(this);
     this.handleAddMovie = this.handleAddMovie.bind(this);
+    this.handleToggle = this.handleToggle.bind(this);
+    this.toggleLists = this.toggleLists.bind(this);
   }
 
   handleSearch(e) {
@@ -41,40 +47,79 @@ export default class App extends Component {
   handleAddMovie(e) {
     e.preventDefault();
     let app = this;
-    let {name, value} = app.addVidRef.current;
-    app.userMovies.push({title: value });
+    console.log('add vid Ref', this.addVidRef);
+    let { name, value } = this.addVidRef.current;
+    app.userMovies.push({title: value, watched: false });
+    // [brave, coco]
     this.setState({
-      [name]: value,
+      [name]: '',
       movies: app.userMovies
     });
   }
 
+  handleInputChange() {
+    let {name, value} = this.addVidRef.current;
+    this.setState({
+      [name]: value
+    });
+  }
+
+  handleToggle(movie) {
+    let app = this;
+    for (var i = 0; i < app.state.movies.length; i++) {
+      var element = app.state.movies[i];
+      if (element.title === movie) {
+        var movieIdx = i;
+        var foundMovie = element;
+        break;
+      }
+    }
+    // directly modifies userMovies array then reassigns movies to this array.
+    app.userMovies.splice(movieIdx, 1);
+    var newWatchedMovies = app.state.watchedMovies.slice()
+    newWatchedMovies.push(foundMovie);
+
+    this.setState({
+      movies: app.userMovies,
+      watchedMovies: newWatchedMovies
+    });
+  }
+
+  toggleLists() {
+    let watched = !this.state.showWatched;
+    let toggled = !this.state.toggleWatched;
+    this.setState({
+      showWatched: watched,
+      toggleWatched: toggled
+    });
+  }
 
   render() {
-    // consider making another component for just the movie list and passing down
-    // movies as props to that component
-    // make a func that only returns a string if the state.searchVids has a length otherwise return null
+    const { movies, search, searchMovies, toggleWatched, watchedMovies, addMovie, showWatched } = this.state;
 
-    const { movies, search, searchMovies } = this.state;
     return (
       <div>
         <h1>Movie List</h1>
           <form onSubmit={this.handleSearch}>
             <label>
               Add Movie Title:
-              <input type="text" name="addMovie" ref={this.addVidRef}/>
-              <button onClick={this.handleAddMovie}>Add Movie!</button>
+              <input type="text" placeholder="add movies here" value={addMovie} name="addMovie" ref={this.addVidRef} onChange={this.handleInputChange.bind(this)}/>
+              <button style={{background: "green", color: "white"}} onClick={this.handleAddMovie}> Add Movie! </button>
             </label>
             <br/>
             <br/>
             <label>
               Search Movie Title:
-              <input type="text" name="search" ref={this.searchVidRef}/>
+              <input type="text" placeholder="search..." name="search" ref={this.searchVidRef}/>
             </label>
             <input type="submit" value="submit"/>
           </form>
+          <button style={(showWatched === true) ? {background: "green", color: "white"} : null}
+            onClick={this.toggleLists}>Watched</button>
+          <button style={(showWatched === false) ? {background: "green", color: "white"} : null}
+            onClick={this.toggleLists}>To Watch</button>
         <div>
-          <MovieList movies={movies}/>
+          <MovieList handleToggle={this.handleToggle} movies={(toggleWatched === false) ? movies : watchedMovies}/>
         </div>
         <div>
           {(searchMovies.length > 0) ? searchMovies.map((movie, i) => {
@@ -85,3 +130,4 @@ export default class App extends Component {
     )
   }
 }
+

@@ -4,6 +4,9 @@ import Movie from './Movie.jsx';
 export default class MovieList extends Component {
   constructor(props) {
     super(props)
+    this.state ={
+      movies: this.props.movies
+    }
   }
 
 
@@ -13,7 +16,7 @@ export default class MovieList extends Component {
     return (
       <ul>
         {movies.map((el, i) => {
-          return <Movie key={i} movie={el.title}/>
+          return <Movie handleToggle = {this.props.handleToggle} key={i} movie={el.title}/>
         })}
       </ul>
     )
