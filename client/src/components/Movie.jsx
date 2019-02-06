@@ -18,8 +18,7 @@ export default class Movie extends Component {
   }
 
   handleTitleClick() {
-
-    this.setState({clicked: !this.state.clicked })
+    this.setState({clicked: !this.state.clicked });
   }
 
   render() {

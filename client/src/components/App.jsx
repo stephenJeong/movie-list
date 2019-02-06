@@ -1,6 +1,8 @@
 // This is where most of your work will be done
 import React, { Component } from 'react'
 import MovieList from './MovieList.jsx';
+import getMovieData from '../../../helpers/movieApi.js';
+import "@babel/polyfill";
 
 export default class App extends Component {
   constructor(props) {
@@ -11,11 +13,13 @@ export default class App extends Component {
       addMovie: '',
       searchMovies: [],
       watchedMovies: [],
+      movieInfo: {},
       toggleWatched: false,
       showWatched: false
     }
 
     this.userMovies = [];
+    // this.movieDetailsArr = [];
     this.searchVidRef = React.createRef();
     this.addVidRef = React.createRef();
     this.handleSearch = this.handleSearch.bind(this);
@@ -57,10 +61,20 @@ export default class App extends Component {
     if (value === '') {
       return;
     }
-    app.userMovies.push({title: value, watched: false });
-    this.setState({
-      [name]: '',
-      movies: app.userMovies
+    // app.userMovies.push({title: value, watched: false });
+    // **** Add API call here ****
+
+    // debugger;
+    getMovieData.getMovieData(value)
+    .then((results) => {
+      var {title, vote_average, release_date, overview, poster_path} = results.data.results[0];
+      let movieDetails = { title, vote_average, release_date, overview, poster_path };
+      app.userMovies.push(movieDetails);
+      this.setState({
+        [name]: '',
+        movies: app.userMovies
+      });
+      console.log('found movie details', movieDetails);
     });
   }
 
@@ -138,3 +152,34 @@ export default class App extends Component {
   }
 }
 
+/*
+user adds coco
+we want to take that movie data object and then pass it into the movieDetails array
+when a user clicks on the movie title we want to look up a title property that matches the clicked item.
+then display it.
+
+adult: false
+backdrop_path: "/5vZw7ltCKI0JiOYTtRxaIC3DX0e.jpg"
+genre_ids: (3) [28, 18, 12]
+id: 98
+original_language: "en"
+original_title: "Gladiator"
+overview: "In the year 180, the death of emperor Marcus Aurelius throws the Roman Empire into chaos.  Maximus is one of the Roman army's most capable and trusted generals and a key advisor to the emperor.  As Marcus' devious son Commodus ascends to the throne, Maximus is set to be executed.  He escapes, but is captured by slave traders.  Renamed Spaniard and forced to become a gladiator, Maximus must battle to the death with other men for the amusement of paying audiences."
+popularity: 22.652
+poster_path: "/6WBIzCgmDCYrqh64yDREGeDk9d3.jpg"
+release_date: "2000-05-01"
+title: "Gladiator"
+video: false
+vote_average: 8.1
+vote_count: 8933
+
+let movieInfo = {
+  title: results.data.results[0].title,
+  vote_average: vote_average,
+  release_date: release_date,
+  overview: overview,
+  poster_path: poster_path
+}
+
+
+*/
