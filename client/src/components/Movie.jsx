@@ -22,7 +22,7 @@ export default class Movie extends Component {
   }
 
   render() {
-    let { movie } =  this.props;
+    let { movie, info } =  this.props;
     return (
       <div>
           <br></br>
@@ -30,7 +30,7 @@ export default class Movie extends Component {
             {movie}
             <button name={movie} onClick={this.getMovieName}>watched</button>
           </div>
-          {this.state.clicked && <Details/>}
+          {this.state.clicked && <Details movieInfo={info}/>}
       </div>
 
 

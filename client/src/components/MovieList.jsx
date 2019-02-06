@@ -12,7 +12,7 @@ export default class MovieList extends Component {
     return (
       <div>
         {movies.map((el, i) => {
-          return <Movie handleToggle={this.props.handleToggle} key={i} movie={el.title}/>
+          return <Movie handleToggle={this.props.handleToggle} key={i} movie={el.title} info={el}/>
         })}
       </div>
 

@@ -1,7 +1,7 @@
 // This is where most of your work will be done
 import React, { Component } from 'react'
 import MovieList from './MovieList.jsx';
-import getMovieData from '../../../helpers/movieApi.js';
+import movieApi from '../../../helpers/movieApi.js';
 import "@babel/polyfill";
 
 export default class App extends Component {
@@ -65,9 +65,10 @@ export default class App extends Component {
     // **** Add API call here ****
 
     // debugger;
-    getMovieData.getMovieData(value)
+    movieApi.getMovieData(value)
     .then((results) => {
-      var {title, vote_average, release_date, overview, poster_path} = results.data.results[0];
+      var { title, vote_average, release_date,
+      overview, poster_path} = results.data.results[0];
       let movieDetails = { title, vote_average, release_date, overview, poster_path };
       app.userMovies.push(movieDetails);
       this.setState({
