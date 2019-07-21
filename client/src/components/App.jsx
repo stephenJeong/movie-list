@@ -22,12 +22,12 @@ export default class App extends Component {
 
   handleSearch(e) {
     let app = this;
-    this.setState({search: true})
+    this.setState({search: true});
     e.preventDefault();
   }
 
   handleChange(e) {
-    this.setState({value: e.target.value})
+    this.setState({value: e.target.value});
   }
 
   render() {
